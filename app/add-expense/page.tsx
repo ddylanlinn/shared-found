@@ -385,9 +385,9 @@ export default function AddExpensePage() {
           {/* 下半部：填入資訊 */}
           <div className="p-0 space-y-6">
             {/* 第一列：日期與金額 */}
-            <div className="grid grid-cols-10 gap-4">
+            <div className="flex items-end gap-6">
               {/* 日期 (佔 30%) */}
-              <div className="col-span-3">
+              <div className="w-[30%]">
                 <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                   Date
                 </label>
@@ -399,8 +399,8 @@ export default function AddExpensePage() {
                 />
               </div>
 
-              {/* 金額 (佔 70%) */}
-              <div className="col-span-7">
+              {/* 金額 (佔 55%) */}
+              <div className="w-[55%]">
                 <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                   Amount *
                 </label>
