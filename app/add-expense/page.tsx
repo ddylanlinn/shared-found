@@ -384,12 +384,10 @@ export default function AddExpensePage() {
 
           {/* 下半部：填入資訊 */}
           <div className="p-0 space-y-6">
-          {/* 下半部：填入資訊 */}
-          <div className="p-0 space-y-6">
             {/* 第一列：日期與金額 */}
-            <div className="grid grid-cols-10 gap-6 items-end">
+            <div className="flex gap-4 w-full overflow-hidden items-end">
               {/* 日期 (佔 30%) */}
-              <div className="col-span-3">
+              <div className="w-[30%] min-w-0 flex flex-col">
                 <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                   Date
                 </label>
@@ -397,20 +395,20 @@ export default function AddExpensePage() {
                   type="date"
                   value={formData.date}
                   onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
-                  className="w-full h-[48px] px-2 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs text-gray-900 outline-none transition-all box-border"
+                  className="w-full h-12 px-2 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs text-gray-900 outline-none transition-all box-border min-w-0"
                 />
               </div>
 
               {/* 金額 (佔 70%) */}
-              <div className="col-span-7">
+              <div className="w-[70%] min-w-0 flex flex-col">
                 <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                   Amount *
                 </label>
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full">
                   <select
                     value={formData.currency}
                     onChange={(e) => setFormData(prev => ({ ...prev, currency: e.target.value }))}
-                    className="w-20 h-[48px] px-2 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all box-border"
+                    className="w-20 h-12 flex-shrink-0 px-2 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all box-border"
                   >
                     {CURRENCIES.map((curr) => (
                       <option key={curr} value={curr}>{curr}</option>
@@ -424,14 +422,12 @@ export default function AddExpensePage() {
                     min="0"
                     step="0.01"
                     inputMode="decimal"
-                    className="flex-1 min-w-0 h-[48px] px-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right text-lg font-bold text-gray-900 outline-none transition-all box-border"
+                    className="flex-1 w-0 min-w-0 h-12 px-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right text-lg font-bold text-gray-900 outline-none transition-all box-border"
                     required
                   />
                 </div>
               </div>
             </div>
-
-            {/* 專案與付款方式 */}
 
             {/* 專案與付款方式 */}
             <div className="grid grid-cols-2 gap-4">
@@ -443,7 +439,7 @@ export default function AddExpensePage() {
                 <select
                   value={formData.project}
                   onChange={(e) => setFormData(prev => ({ ...prev, project: e.target.value }))}
-                  className="w-full h-[48px] px-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all box-border"
+                  className="w-full h-12 px-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all box-border"
                 >
                   <option value="">Select Project</option>
                   {projects.map((proj) => (
@@ -462,7 +458,7 @@ export default function AddExpensePage() {
                 <select
                   value={formData.method}
                   onChange={(e) => setFormData(prev => ({ ...prev, method: e.target.value }))}
-                  className="w-full h-[48px] px-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all box-border"
+                  className="w-full h-12 px-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all box-border"
                 >
                   <option value="">Select Method</option>
                   {paymentMethods.map((method) => (
@@ -484,7 +480,7 @@ export default function AddExpensePage() {
                 value={formData.label}
                 onChange={(e) => setFormData(prev => ({ ...prev, label: e.target.value }))}
                 placeholder="Business, Personal..."
-                className="w-full h-[48px] px-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 box-border"
+                className="w-full h-12 px-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 box-border"
               />
             </div>
 
@@ -498,7 +494,7 @@ export default function AddExpensePage() {
                 onChange={(e) => setFormData(prev => ({ ...prev, note: e.target.value }))}
                 placeholder="Additional notes..."
                 rows={2}
-                className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400"
+                className="w-full px-3 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400"
               />
             </div>
           </div>
