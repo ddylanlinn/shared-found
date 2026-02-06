@@ -60,4 +60,6 @@ export const STORAGE_KEYS = {
   EXPENSE_CATEGORIES: 'expense_categories',
   /** Auth Token key */
   AUTH_TOKEN: 'auth-token',
+  /** Auth Status key */
+  AUTH_STATUS: 'auth_status',
 } as const;

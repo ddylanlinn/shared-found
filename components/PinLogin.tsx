@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { authStorage } from '@/lib/utils/authStorage';
 
 export default function PinLogin() {
   const [pin, setPin] = useState('');
@@ -26,6 +27,8 @@ export default function PinLogin() {
       const data = await response.json();
 
       if (data.success) {
+        // 登入成功，設置認證狀態到 localStorage
+        authStorage.set(true);
         // Login successful, redirecting to dashboard
         router.push('/dashboard');
       } else {

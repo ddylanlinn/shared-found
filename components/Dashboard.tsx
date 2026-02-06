@@ -10,6 +10,7 @@ import MonthlySummaryCardSkeleton from './MonthlySummaryCardSkeleton';
 import BottomNav from './BottomNav';
 import LoadingBar from './LoadingBar';
 import { categoryStorage } from '@/lib/utils/categoryStorage';
+import { authStorage } from '@/lib/utils/authStorage';
 
 export default function Dashboard() {
   const [summary, setSummary] = useState<MonthlySummary | null>(null);
@@ -24,15 +25,26 @@ export default function Dashboard() {
   }, []);
 
   const checkAuth = async () => {
+    // 先檢查 localStorage 緩存
+    const cached = authStorage.get();
+    if (cached?.authenticated) {
+      return; // 有緩存且已認證，直接返回
+    }
+
+    // 無緩存或未認證，才發送請求
     try {
       const response = await fetch('/api/auth/verify');
       const data = await response.json();
 
-      if (!data.data?.authenticated) {
+      const isAuthenticated = data.data?.authenticated || false;
+      authStorage.set(isAuthenticated);
+
+      if (!isAuthenticated) {
         router.push('/');
       }
     } catch (error) {
       console.error('Verification failed:', error);
+      authStorage.set(false);
       router.push('/');
     }
   };
@@ -44,17 +56,24 @@ export default function Dashboard() {
     }
 
     try {
-      // Load categories and save to localStorage
-      const categoriesResponse = await fetch('/api/categories');
-      const categoriesData = await categoriesResponse.json();
+      // 檢查 localStorage 是否已有 categories 緩存
+      const cachedCategories = categoryStorage.get();
 
-      if (categoriesData.success) {
-        categoryStorage.set(
-          categoriesData.data.categories || [],
-          categoriesData.data.paymentMethods || [],
-          categoriesData.data.projects || [],
-          categoriesData.data.labels || []
-        );
+      if (!cachedCategories) {
+        // 只在沒有緩存時才 fetch categories
+        const categoriesResponse = await fetch('/api/categories');
+        const categoriesData = await categoriesResponse.json();
+
+        if (categoriesData.success) {
+          categoryStorage.set(
+            categoriesData.data.categories || [],
+            categoriesData.data.paymentMethods || [],
+            categoriesData.data.projects || [],
+            categoriesData.data.labels || [],
+            categoriesData.data.defaultProject || '',
+            categoriesData.data.defaultCurrency || 'TWD'
+          );
+        }
       }
 
       // Load monthly summary
@@ -85,7 +104,9 @@ export default function Dashboard() {
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
-      categoryStorage.clear(); // 清除 categories 快取
+      // 清除所有 localStorage 快取
+      categoryStorage.clear();
+      authStorage.clear();
       router.push('/');
     } catch (error) {
       console.error('Logout failed:', error);

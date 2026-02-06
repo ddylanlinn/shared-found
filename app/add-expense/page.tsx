@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { categoryStorage } from '@/lib/utils/categoryStorage';
+import { authStorage } from '@/lib/utils/authStorage';
 import SuccessModal from '@/components/SuccessModal';
 
 interface CategoryConfig {
@@ -108,15 +109,26 @@ export default function AddExpensePage() {
   }, [defaultCurrency]);
 
   const checkAuth = async () => {
+    // 先檢查 localStorage 緩存
+    const cached = authStorage.get();
+    if (cached?.authenticated) {
+      return; // 有緩存且已認證，直接返回
+    }
+
+    // 無緩存或未認證，才發送請求
     try {
       const response = await fetch('/api/auth/verify');
       const data = await response.json();
 
-      if (!data.data?.authenticated) {
+      const isAuthenticated = data.data?.authenticated || false;
+      authStorage.set(isAuthenticated);
+
+      if (!isAuthenticated) {
         router.push('/');
       }
     } catch (error) {
       console.error('Verification failed:', error);
+      authStorage.set(false);
       router.push('/');
     }
   };
@@ -126,21 +138,19 @@ export default function AddExpensePage() {
       // 優先從 localStorage 讀取
       const stored = categoryStorage.get();
 
-      // Check if we have both defaultProject AND defaultCurrency in cache (if configured)
-      // Since defaultCurrency is new, we should force refresh if it's missing but we expect it might be there.
-      // However, old cache won't have it.
-      if (stored && stored.defaultProject && stored.defaultCurrency) {
+      if (stored) {
+        // 有緩存就直接使用，不再發送 API 請求
         setCategories(stored.categories);
         setPaymentMethods(stored.paymentMethods);
         setProjects(stored.projects || []);
         setLabels(stored.labels || []);
-        setDefaultProject(stored.defaultProject);
-        setDefaultCurrency(stored.defaultCurrency);
+        setDefaultProject(stored.defaultProject || '');
+        setDefaultCurrency(stored.defaultCurrency || 'TWD');
         setLoading(false);
         return;
       }
 
-      // 如果 localStorage 沒有資料（直接訪問此頁面），才發送 API 請求
+      // 只有在 localStorage 完全沒有資料時，才發送 API 請求
       const response = await fetch('/api/categories');
       const data = await response.json();
 
@@ -159,7 +169,7 @@ export default function AddExpensePage() {
         setDefaultProject(defaultProject);
         setDefaultCurrency(defaultCurrency);
 
-        // 同時也存一份到 localStorage
+        // 存入 localStorage
         categoryStorage.set(categories, paymentMethods, projects, labels, defaultProject, defaultCurrency);
       }
     } catch (error) {
