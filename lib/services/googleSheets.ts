@@ -70,8 +70,8 @@ export class GoogleSheetsService {
     // 轉換為 Expense 物件，過濾掉空行
     let expenses = dataRows
       .filter((row: SheetRow) => row[0]) // 確保 Date 欄位有值
-      .map((row: SheetRow) => ({
-        id: String(row[9] || uuidv4()), // J 欄：ID，若無則生成新的
+      .map((row: SheetRow, index: number) => ({
+        id: String(row[9] || `__idx_${index + 1}`), // J 欄：ID，若無則使用帶首碼的行索引（+1補償slice）
         date: String(row[0] || ''),
         category: String(row[1] || ''),
         subcategory: String(row[2] || ''),
@@ -163,22 +163,7 @@ export class GoogleSheetsService {
    * 刪除支出記錄
    */
   async deleteExpense(id: string): Promise<boolean> {
-    // 先取得所有資料以找到對應的行號
-    const response = await this.sheets.spreadsheets.values.get({
-      spreadsheetId: this.spreadsheetId,
-      range: 'Data!A:J',
-    });
-
-    const rows = response.data.values || [];
-    
-    // 找到對應 ID 的行號（跳過標題列，從第 2 行開始）
-    const rowIndex = rows.findIndex((row, index) => 
-      index > 0 && String(row[9]) === id
-    );
-
-    if (rowIndex === -1) {
-      return false;
-    }
+    let rowIndex = -1;
 
     // 獲取 Data 工作表的 sheetId
     const sheetMetadata = await this.sheets.spreadsheets.get({
@@ -193,7 +178,29 @@ export class GoogleSheetsService {
       throw new Error('找不到 Data 工作表');
     }
 
-    // 刪除該行（rowIndex 已經是 0-based）
+    // 如果 ID 是以 __idx_ 開頭，表示是直接使用行索引
+    if (id.startsWith('__idx_')) {
+      rowIndex = parseInt(id.replace('__idx_', ''), 10);
+    } else {
+      // 否則，先取得所有資料以找到對應 ID 的行號
+      const response = await this.sheets.spreadsheets.values.get({
+        spreadsheetId: this.spreadsheetId,
+        range: 'Data!A:J',
+      });
+
+      const rows = response.data.values || [];
+      
+      // 找到對應 ID 的行號（跳過標題列，從第 2 行開始）
+      rowIndex = rows.findIndex((row, index) => 
+        index > 0 && String(row[9]) === id
+      );
+    }
+
+    if (rowIndex === -1 || isNaN(rowIndex)) {
+      return false;
+    }
+
+    // 刪除該行（rowIndex 是 0-based 索引）
     await this.sheets.spreadsheets.batchUpdate({
       spreadsheetId: this.spreadsheetId,
       requestBody: {
