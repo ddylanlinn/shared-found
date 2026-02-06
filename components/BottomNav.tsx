@@ -1,16 +1,15 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function BottomNav() {
-  const router = useRouter();
-
-  const handleAddExpense = () => {
-    router.push('/add-expense');
+  const triggerVibration = () => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate(50);
+    }
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around items-center h-20 px-4 pb-safe z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around items-center h-20 px-4 pb-safe z-50 shadow-[0_-2px_15px_rgba(0,0,0,0.08)]">
       {/* Wallet Icon (Coming Soon) */}
       <button 
         disabled
@@ -31,13 +30,27 @@ export default function BottomNav() {
 
       {/* Large Add Button */}
       <div className="relative -top-8">
-        <button
-          onClick={handleAddExpense}
-          className="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg border-4 border-white transition-transform active:scale-95 z-50"
+        <Link
+          href="/add-expense"
+          onClick={triggerVibration}
+          className="bg-blue-600 hover:bg-blue-700 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-[0_4px_20px_rgba(37,99,235,0.4)] border-4 border-white transition-all active:scale-90 active:bg-blue-800 z-50 group"
           aria-label="Add Expense"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-        </button>
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="32" 
+            height="32" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="3" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            className="lucide lucide-plus transition-transform group-active:rotate-90"
+          >
+            <path d="M5 12h14"/><path d="M12 5v14"/>
+          </svg>
+        </Link>
       </div>
 
       {/* Chart Icon (Coming Soon) */}
