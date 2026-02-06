@@ -386,14 +386,14 @@ export default function AddExpensePage() {
           <div className="p-0 space-y-6">
             {/* 金額 */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1.5">
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                 Amount *
               </label>
               <div className="flex gap-2">
                 <select
                   value={formData.currency}
                   onChange={(e) => setFormData(prev => ({ ...prev, currency: e.target.value }))}
-                  className="w-20 px-2 py-2.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm outline-none transition-all"
+                  className="w-20 px-2 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all"
                 >
                   {CURRENCIES.map((curr) => (
                     <option key={curr} value={curr}>{curr}</option>
@@ -408,7 +408,7 @@ export default function AddExpensePage() {
                   step="0.01"
                   inputMode="decimal"
                   autoFocus
-                  className="flex-1 px-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right text-lg font-semibold outline-none transition-all"
+                  className="flex-1 px-3 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right text-lg font-bold text-gray-900 outline-none transition-all"
                   required
                 />
               </div>
@@ -416,14 +416,14 @@ export default function AddExpensePage() {
 
             {/* 日期 */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1.5">
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                 Date
               </label>
               <input
                 type="date"
                 value={formData.date}
                 onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm outline-none transition-all"
+                className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all"
               />
             </div>
 
@@ -431,13 +431,13 @@ export default function AddExpensePage() {
             <div className="grid grid-cols-2 gap-4">
               {/* 專案 */}
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                   Project
                 </label>
                 <select
                   value={formData.project}
                   onChange={(e) => setFormData(prev => ({ ...prev, project: e.target.value }))}
-                  className="w-full px-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm outline-none transition-all"
+                  className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all"
                 >
                   <option value="">Select Project</option>
                   {projects.map((proj) => (
@@ -450,13 +450,13 @@ export default function AddExpensePage() {
 
               {/* 付款方式 */}
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                   Payment Method
                 </label>
                 <select
                   value={formData.method}
                   onChange={(e) => setFormData(prev => ({ ...prev, method: e.target.value }))}
-                  className="w-full px-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm outline-none transition-all"
+                  className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all"
                 >
                   <option value="">Select Method</option>
                   {paymentMethods.map((method) => (
@@ -470,7 +470,7 @@ export default function AddExpensePage() {
 
             {/* 標籤 */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1.5">
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                 Label
               </label>
               <input
@@ -478,13 +478,13 @@ export default function AddExpensePage() {
                 value={formData.label}
                 onChange={(e) => setFormData(prev => ({ ...prev, label: e.target.value }))}
                 placeholder="Business, Personal..."
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm outline-none transition-all placeholder:text-gray-400"
+                className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400"
               />
             </div>
 
             {/* 備註 */}
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1.5">
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                 Notes
               </label>
               <textarea
@@ -492,7 +492,7 @@ export default function AddExpensePage() {
                 onChange={(e) => setFormData(prev => ({ ...prev, note: e.target.value }))}
                 placeholder="Additional notes..."
                 rows={2}
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm outline-none transition-all placeholder:text-gray-400"
+                className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400"
               />
             </div>
           </div>
