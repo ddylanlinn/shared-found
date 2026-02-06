@@ -189,7 +189,7 @@ export class GoogleSheetsService {
       (sheet) => sheet.properties?.title === 'Data'
     );
 
-    if (!dataSheet?.properties?.sheetId) {
+    if (dataSheet?.properties?.sheetId === undefined || dataSheet?.properties?.sheetId === null) {
       throw new Error('找不到 Data 工作表');
     }
 
