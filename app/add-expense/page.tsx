@@ -384,47 +384,50 @@ export default function AddExpensePage() {
 
           {/* 下半部：填入資訊 */}
           <div className="p-0 space-y-6">
-            {/* 金額 */}
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                Amount *
-              </label>
-              <div className="flex gap-2">
-                <select
-                  value={formData.currency}
-                  onChange={(e) => setFormData(prev => ({ ...prev, currency: e.target.value }))}
-                  className="w-20 px-2 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all"
-                >
-                  {CURRENCIES.map((curr) => (
-                    <option key={curr} value={curr}>{curr}</option>
-                  ))}
-                </select>
+            {/* 第一列：日期與金額 */}
+            <div className="grid grid-cols-12 gap-4">
+              {/* 日期 (佔 5 格) */}
+              <div className="col-span-5">
+                <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                  Date
+                </label>
                 <input
-                  type="number"
-                  value={formData.amount}
-                  onChange={(e) => setFormData(prev => ({ ...prev, amount: e.target.value }))}
-                  placeholder="0"
-                  min="0"
-                  step="0.01"
-                  inputMode="decimal"
-                  autoFocus
-                  className="flex-1 px-3 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right text-lg font-bold text-gray-900 outline-none transition-all"
-                  required
+                  type="date"
+                  value={formData.date}
+                  onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                  className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all"
                 />
               </div>
-            </div>
 
-            {/* 日期 */}
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                Date
-              </label>
-              <input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
-                className="w-full px-3 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-gray-900 outline-none transition-all"
-              />
+              {/* 金額 (佔 7 格) */}
+              <div className="col-span-7">
+                <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                  Amount *
+                </label>
+                <div className="flex gap-1.5">
+                  <select
+                    value={formData.currency}
+                    onChange={(e) => setFormData(prev => ({ ...prev, currency: e.target.value }))}
+                    className="w-16 px-1 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs text-gray-900 outline-none transition-all"
+                  >
+                    {CURRENCIES.map((curr) => (
+                      <option key={curr} value={curr}>{curr}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="number"
+                    value={formData.amount}
+                    onChange={(e) => setFormData(prev => ({ ...prev, amount: e.target.value }))}
+                    placeholder="0"
+                    min="0"
+                    step="0.01"
+                    inputMode="decimal"
+                    autoFocus
+                    className="flex-1 px-2.5 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right text-lg font-bold text-gray-900 outline-none transition-all"
+                    required
+                  />
+                </div>
+              </div>
             </div>
 
             {/* 專案與付款方式 */}
