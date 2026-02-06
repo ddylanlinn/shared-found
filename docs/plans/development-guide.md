@@ -318,15 +318,7 @@ export class OpenClawService {
 ```typescript
 // types/expense.ts
 export interface Expense {
-  id?: string;
-  date: string;
-  amount: number;
-  category: string;
-  subcategory: string;
-  label: string;
-  method: string;
-  currency: string;
-  note?: string;
+  
 }
 ```
 
@@ -604,7 +596,7 @@ export function PinLogin({ onSuccess }: PinLoginProps) {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-6 text-center">家庭記帳系統</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">Expense Tracker </h1>
         <form onSubmit={handleSubmit}>
           <input
             type="password"
@@ -826,7 +818,7 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">家庭記帳系統</h1>
+          <h1 className="text-2xl font-bold">Expense Tracker </h1>
           <button
             onClick={() => {
               localStorage.removeItem('token');
