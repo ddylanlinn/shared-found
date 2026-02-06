@@ -62,4 +62,6 @@ export const STORAGE_KEYS = {
   AUTH_TOKEN: 'auth-token',
   /** Auth Status key */
   AUTH_STATUS: 'auth_status',
+  /** Dashboard 資料快取 key */
+  DASHBOARD_DATA: 'dashboard_data',
 } as const;

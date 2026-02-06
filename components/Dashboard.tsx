@@ -11,6 +11,7 @@ import BottomNav from './BottomNav';
 import LoadingBar from './LoadingBar';
 import { categoryStorage } from '@/lib/utils/categoryStorage';
 import { authStorage } from '@/lib/utils/authStorage';
+import { dashboardStorage } from '@/lib/utils/dashboardStorage';
 
 export default function Dashboard() {
   const [summary, setSummary] = useState<MonthlySummary | null>(null);
@@ -50,10 +51,20 @@ export default function Dashboard() {
   };
 
   const loadData = async (isInitialLoad = true) => {
-    setIsRefreshing(true);
+    // 1. 先嘗試從 cache 載入（瞬間顯示）
     if (isInitialLoad) {
-      setLoading(true);
+      const cached = dashboardStorage.get();
+      if (cached) {
+        setSummary(cached.summary);
+        setExpenses(cached.expenses);
+        setLoading(false);
+        // 繼續背景更新
+      } else {
+        setLoading(true);
+      }
     }
+
+    setIsRefreshing(true);
 
     try {
       // 檢查 localStorage 是否已有 categories 緩存
@@ -80,24 +91,29 @@ export default function Dashboard() {
       const summaryResponse = await fetch('/api/expenses/summary');
       const summaryData = await summaryResponse.json();
 
+      let newSummary: MonthlySummary | null = null;
       if (summaryData.success) {
-        setSummary(summaryData.data);
+        newSummary = summaryData.data;
+        setSummary(newSummary);
       }
 
       // Load recent expenses
       const expensesResponse = await fetch('/api/expenses?limit=20');
       const expensesData = await expensesResponse.json();
 
+      let newExpenses: Expense[] = [];
       if (expensesData.success) {
-        setExpenses(expensesData.data);
+        newExpenses = expensesData.data;
+        setExpenses(newExpenses);
       }
+
+      // 2. 更新 cache
+      dashboardStorage.set(newSummary, newExpenses);
     } catch (error) {
       console.error('Failed to load data:', error);
     } finally {
       setIsRefreshing(false);
-      if (isInitialLoad) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
   };
 
@@ -107,6 +123,7 @@ export default function Dashboard() {
       // 清除所有 localStorage 快取
       categoryStorage.clear();
       authStorage.clear();
+      dashboardStorage.invalidate();
       router.push('/');
     } catch (error) {
       console.error('Logout failed:', error);
@@ -126,6 +143,7 @@ export default function Dashboard() {
       const data = await response.json();
 
       if (data.success) {
+        dashboardStorage.invalidate();
         loadData(false); // 重新載入資料，使用 refreshing 狀態
       } else {
         alert(data.error || 'Delete failed');

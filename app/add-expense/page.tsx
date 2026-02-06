@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { categoryStorage } from '@/lib/utils/categoryStorage';
 import { authStorage } from '@/lib/utils/authStorage';
+import { dashboardStorage } from '@/lib/utils/dashboardStorage';
 import SuccessModal from '@/components/SuccessModal';
 
 interface CategoryConfig {
