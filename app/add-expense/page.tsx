@@ -77,6 +77,7 @@ export default function AddExpensePage() {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const today = new Date().toISOString().split('T')[0];
+  
 
   const [formData, setFormData] = useState({
     category: '',
