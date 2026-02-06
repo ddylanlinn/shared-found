@@ -326,6 +326,22 @@ export class GoogleSheetsService {
   }
 
   /**
+   * 取得預設專案
+   */
+  async getDefaultProject(): Promise<string> {
+    const project = await this.getConfigValue('default_project');
+    return project || '';
+  }
+
+  /**
+   * 取得預設幣別
+   */
+  async getDefaultCurrency(): Promise<string> {
+    const currency = await this.getConfigValue('default_currency');
+    return currency || 'TWD';
+  }
+
+  /**
    * 初始化 Google Sheets（建立標題列）
    */
   async initialize(): Promise<void> {

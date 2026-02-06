@@ -10,6 +10,8 @@ interface CategoryData {
   paymentMethods: string[];
   projects: string[];
   labels: string[];
+  defaultProject?: string;
+  defaultCurrency?: string;
 }
 
 const STORAGE_KEY = STORAGE_KEYS.EXPENSE_CATEGORIES;
@@ -34,7 +36,14 @@ export const categoryStorage = {
   /**
    * 將 categories 資料存入 localStorage
    */
-  set(categories: CategoryConfig[], paymentMethods: string[], projects: string[] = [], labels: string[] = []): void {
+  set(
+    categories: CategoryConfig[],
+    paymentMethods: string[],
+    projects: string[] = [],
+    labels: string[] = [],
+    defaultProject: string = '',
+    defaultCurrency: string = 'TWD'
+  ): void {
     // SSR 環境檢查
     if (typeof window === 'undefined') return;
     
@@ -46,6 +55,8 @@ export const categoryStorage = {
           paymentMethods,
           projects,
           labels,
+          defaultProject,
+          defaultCurrency,
         })
       );
     } catch (error) {

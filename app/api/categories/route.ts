@@ -26,6 +26,8 @@ export async function GET(request: NextRequest) {
     const paymentMethods = await googleSheetsService.getPaymentMethods();
     const projects = await googleSheetsService.getProjects();
     const labels = await googleSheetsService.getLabels();
+    const defaultProject = await googleSheetsService.getDefaultProject();
+    const defaultCurrency = await googleSheetsService.getDefaultCurrency();
 
     console.log('Categories loaded:', categories);
     console.log('Payment methods loaded:', paymentMethods);
@@ -37,6 +39,8 @@ export async function GET(request: NextRequest) {
         paymentMethods,
         projects,
         labels,
+        defaultProject,
+        defaultCurrency,
       },
     });
   } catch (error) {

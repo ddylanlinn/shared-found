@@ -69,6 +69,8 @@ export default function AddExpensePage() {
   const [paymentMethods, setPaymentMethods] = useState<string[]>([]);
   const [projects, setProjects] = useState<string[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
+  const [defaultProject, setDefaultProject] = useState<string>('');
+  const [defaultCurrency, setDefaultCurrency] = useState<string>('TWD');
   const [loading, setLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -79,7 +81,7 @@ export default function AddExpensePage() {
     subcategory: '',
     amount: '',
     date: today,
-    project: '',
+    project: '', // This will be updated by defaultProject in useEffect
     label: '',
     method: '',
     currency: 'TWD',
@@ -90,6 +92,20 @@ export default function AddExpensePage() {
     checkAuth();
     loadCategories();
   }, []);
+
+  // Update formData.project when defaultProject is loaded
+  useEffect(() => {
+    if (defaultProject && formData.project === '') {
+      setFormData(prev => ({ ...prev, project: defaultProject }));
+    }
+  }, [defaultProject, formData.project]);
+
+  // Update formData.currency when defaultCurrency is loaded
+  useEffect(() => {
+    if (defaultCurrency && formData.currency === 'TWD') { // Only update if still default
+      setFormData(prev => ({ ...prev, currency: defaultCurrency }));
+    }
+  }, [defaultCurrency]);
 
   const checkAuth = async () => {
     try {
@@ -110,11 +126,16 @@ export default function AddExpensePage() {
       // 優先從 localStorage 讀取
       const stored = categoryStorage.get();
 
-      if (stored) {
+      // Check if we have both defaultProject AND defaultCurrency in cache (if configured)
+      // Since defaultCurrency is new, we should force refresh if it's missing but we expect it might be there.
+      // However, old cache won't have it.
+      if (stored && stored.defaultProject && stored.defaultCurrency) {
         setCategories(stored.categories);
         setPaymentMethods(stored.paymentMethods);
         setProjects(stored.projects || []);
         setLabels(stored.labels || []);
+        setDefaultProject(stored.defaultProject);
+        setDefaultCurrency(stored.defaultCurrency);
         setLoading(false);
         return;
       }
@@ -128,14 +149,18 @@ export default function AddExpensePage() {
         const paymentMethods = data.data.paymentMethods || [];
         const projects = data.data.projects || [];
         const labels = data.data.labels || [];
+        const defaultProject = data.data.defaultProject || '';
+        const defaultCurrency = data.data.defaultCurrency || 'TWD';
 
         setCategories(categories);
         setPaymentMethods(paymentMethods);
         setProjects(projects);
         setLabels(labels);
+        setDefaultProject(defaultProject);
+        setDefaultCurrency(defaultCurrency);
 
         // 同時也存一份到 localStorage
-        categoryStorage.set(categories, paymentMethods, projects, labels);
+        categoryStorage.set(categories, paymentMethods, projects, labels, defaultProject, defaultCurrency);
       }
     } catch (error) {
       console.error('Failed to load categories:', error);
@@ -216,10 +241,10 @@ export default function AddExpensePage() {
       subcategory: '',
       amount: '',
       date: new Date().toISOString().split('T')[0],
-      project: '',
+      project: defaultProject,
       label: '',
       method: '',
-      currency: 'TWD',
+      currency: defaultCurrency,
       note: '',
     });
     setShowSubcategory(false);
@@ -370,6 +395,8 @@ export default function AddExpensePage() {
                   placeholder="0"
                   min="0"
                   step="0.01"
+                  inputMode="decimal"
+                  autoFocus
                   className="flex-1 px-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-right text-lg font-semibold outline-none transition-all"
                   required
                 />
