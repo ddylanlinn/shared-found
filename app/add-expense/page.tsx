@@ -384,10 +384,12 @@ export default function AddExpensePage() {
 
           {/* 下半部：填入資訊 */}
           <div className="p-0 space-y-6">
+          {/* 下半部：填入資訊 */}
+          <div className="p-0 space-y-6">
             {/* 第一列：日期與金額 */}
-            <div className="flex gap-6">
-              {/* 日期 (佔約 30%) */}
-              <div className="w-1/3">
+            <div className="grid grid-cols-10 gap-6 items-end">
+              {/* 日期 (佔 30%) */}
+              <div className="col-span-3">
                 <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                   Date
                 </label>
@@ -399,8 +401,8 @@ export default function AddExpensePage() {
                 />
               </div>
 
-              {/* 金額 (佔剩餘空間) */}
-              <div className="flex-1">
+              {/* 金額 (佔 70%) */}
+              <div className="col-span-7">
                 <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                   Amount *
                 </label>
@@ -428,6 +430,8 @@ export default function AddExpensePage() {
                 </div>
               </div>
             </div>
+
+            {/* 專案與付款方式 */}
 
             {/* 專案與付款方式 */}
             <div className="grid grid-cols-2 gap-4">

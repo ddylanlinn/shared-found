@@ -2,72 +2,33 @@
 
 export default function ExpenseListSkeleton() {
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden animate-pulse">
-      <div className="px-6 py-4 border-b border-gray-200">
+    <div className="space-y-4 animate-pulse">
+      <div className="px-4 py-2">
         <div className="h-6 bg-gray-200 rounded w-48"></div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left">
-                <div className="h-3 bg-gray-200 rounded w-12"></div>
-              </th>
-              <th className="px-6 py-3 text-left">
+      <div className="space-y-3">
+        {[...Array(5)].map((_, index) => (
+          <div 
+            key={index} 
+            className="bg-white rounded-2xl p-4 shadow-sm border border-gray-50 flex items-center gap-4"
+          >
+            {/* Icon Circle */}
+            <div className="w-12 h-12 rounded-full bg-gray-100 flex-shrink-0"></div>
+
+            {/* Info */}
+            <div className="flex-1 space-y-3">
+              <div className="flex justify-between">
+                <div className="h-4 bg-gray-200 rounded w-24"></div>
+                <div className="h-5 bg-gray-200 rounded w-16"></div>
+              </div>
+              <div className="flex justify-between">
+                <div className="h-3 bg-gray-200 rounded w-32"></div>
                 <div className="h-3 bg-gray-200 rounded w-16"></div>
-              </th>
-              <th className="px-6 py-3 text-left">
-                <div className="h-3 bg-gray-200 rounded w-20"></div>
-              </th>
-              <th className="px-6 py-3 text-right">
-                <div className="h-3 bg-gray-200 rounded w-14 ml-auto"></div>
-              </th>
-              <th className="px-6 py-3 text-left">
-                <div className="h-3 bg-gray-200 rounded w-12"></div>
-              </th>
-              <th className="px-6 py-3 text-left">
-                <div className="h-3 bg-gray-200 rounded w-16"></div>
-              </th>
-              <th className="px-6 py-3 text-left">
-                <div className="h-3 bg-gray-200 rounded w-12"></div>
-              </th>
-              <th className="px-6 py-3 text-right">
-                <div className="h-3 bg-gray-200 rounded w-12 ml-auto"></div>
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {[...Array(5)].map((_, index) => (
-              <tr key={index}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="h-4 bg-gray-200 rounded w-20"></div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="h-6 bg-gray-200 rounded-full w-24"></div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="h-4 bg-gray-200 rounded w-16"></div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  <div className="h-4 bg-gray-200 rounded w-16 ml-auto"></div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="h-4 bg-gray-200 rounded w-14"></div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="h-4 bg-gray-200 rounded w-20"></div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="h-4 bg-gray-200 rounded w-32"></div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  <div className="h-4 bg-gray-200 rounded w-12 ml-auto"></div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
